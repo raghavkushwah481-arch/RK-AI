@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RK AI</title>
+
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;
+ background:#080b14;
+ color:white;
+ font-family:Arial,sans-serif;
+}
+header{
+ padding:18px;
+ display:flex;
+ align-items:center;
+ gap:12px;
+ border-bottom:1px solid #292b36;
+ background:#0d1120;
+}
+.logo{
+ width:45px;height:45px;
+ border:2px solid #d9b45b;
+ border-radius:14px;
+ display:grid;place-items:center;
+ color:#e7c36b;
+ font-size:19px;font-weight:bold;
+}
+header h2{margin:0;color:#e7c36b}
+header small{color:#aaa}
+.container{padding:20px;max-width:750px;margin:auto}
+.hero{
+ padding:25px 15px;
+ text-align:center;
+ border:1px solid #66532e;
+ border-radius:18px;
+ background:linear-gradient(135deg,#171b2a,#10101a);
+}
+.hero h1{color:#e7c36b;font-size:30px}
+.hero p{color:#bbb;line-height:1.6}
+.badge{color:#e7c36b;font-size:12px}
+.grid{
+ display:grid;
+ grid-template-columns:repeat(2,1fr);
+ gap:12px;margin-top:22px;
+}
+.card{
+ background:#131827;
+ border:1px solid #303344;
+ border-radius:14px;
+ padding:18px 12px;
+ text-align:center;
+ cursor:pointer;
+}
+.card:active{border-color:#e7c36b}
+.icon{font-size:27px}
+.card h3{font-size:15px;margin:10px 0 5px}
+.card p{font-size:12px;color:#999;margin:0}
+.chat{
+ margin-top:22px;
+ padding:16px;
+ background:#131827;
+ border:1px solid #303344;
+ border-radius:15px;
+}
+.chat h3{color:#e7c36b}
+input{
+ width:100%;padding:14px;
+ border-radius:10px;
+ border:1px solid #555;
+ background:#080b14;color:white;
+ margin-top:10px;
+}
+button{
+ background:#d9b45b;color:#111;
+ border:0;border-radius:10px;
+ padding:13px 18px;
+ font-weight:bold;margin-top:10px;
+}
+#reply{color:#ddd;line-height:1.5}
+footer{text-align:center;color:#777;padding:25px;font-size:12px}
+</style>
+</head>
+
+<body>
+
+<header>
+ <div class="logo">RK</div>
+ <div>
+  <h2>RK AI</h2>
+  <small>Your AI Assistant</small>
+ </div>
+</header>
+
+<div class="container">
+
+<section class="hero">
+ <div class="badge">WELCOME TO THE FUTURE</div>
+ <h1>RK AI</h1>
+ <p>एक जगह पर AI की कई सुविधाएँ।<br>
+ आपका स्मार्ट AI असिस्टेंट।</p>
+ <div class="badge">POWERED BY RK AI</div>
+</section>
+
+<h2 style="color:#e7c36b;margin-top:28px">Explore AI Tools</h2>
+
+<div class="grid">
+
+<div class="card" onclick="selectTool('AI Chat')">
+ <div class="icon">💬</div>
+ <h3>AI Chat</h3><p>AI से बातचीत</p>
+</div>
+
+<div class="card" onclick="selectTool('Image Generator')">
+ <div class="icon">🎨</div>
+ <h3>Image Generator</h3><p>AI तस्वीरें</p>
+</div>
+
+<div class="card" onclick="selectTool('Video Generator')">
+ <div class="icon">🎬</div>
+ <h3>Video Generator</h3><p>AI वीडियो</p>
+</div>
+
+<div class="card" onclick="selectTool('Voice Assistant')">
+ <div class="icon">🎙️</div>
+ <h3>Voice Assistant</h3><p>आवाज़ से सहायता</p>
+</div>
+
+<div class="card" onclick="selectTool('Code Assistant')">
+ <div class="icon">💻</div>
+ <h3>Code Assistant</h3><p>कोडिंग में मदद</p>
+</div>
+
+<div class="card" onclick="selectTool('App Builder')">
+ <div class="icon">📱</div>
+ <h3>App Builder</h3><p>ऐप बनाने में मदद</p>
+</div>
+
+<div class="card" onclick="selectTool('Website Builder')">
+ <div class="icon">🌐</div>
+ <h3>Website Builder</h3><p>वेबसाइट बनाना</p>
+</div>
+
+<div class="card" onclick="selectTool('Study Assistant')">
+ <div class="icon">📚</div>
+ <h3>Study Assistant</h3><p>पढ़ाई में सहायता</p>
+</div>
+
+</div>
+
+<div class="chat">
+ <h3 id="toolTitle">💬 RK AI Chat</h3>
+ <p style="color:#aaa;font-size:13px">
+ अपना सवाल लिखें। AI कनेक्शन अगले चरण में जोड़ा जाएगा।
+ </p>
+ <input id="question" placeholder="यहाँ अपना सवाल लिखें...">
+ <button onclick="sendMessage()">Send Message</button>
+ <p id="reply"></p>
+</div>
+
+</div>
+
+<footer>
+ RK AI © 2026 | Built with ambition
+</footer>
+
+<script>
+function selectTool(name){
+ document.getElementById("toolTitle").innerText="✨ "+name;
+ document.getElementById("reply").innerText=
+ name+" चुना गया है। इसका AI कनेक्शन अगले चरण में जोड़ा जाएगा।";
+ document.getElementById("question").focus();
+}
+function sendMessage(){
+ let q=document.getElementById("question").value.trim();
+ if(!q){alert("पहले अपना सवाल लिखें।");return;}
+ document.getElementById("reply").innerText=
+ "आपका सवाल दर्ज हो गया है। असली AI जवाब देने के लिए बैकएंड कनेक्शन जोड़ना बाकी है।";
+}
+</script>
+
+</body>
+</html>
