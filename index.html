@@ -168,17 +168,45 @@ footer{text-align:center;color:#777;padding:25px;font-size:12px}
 </footer>
 
 <script>
-function selectTool(name){
- document.getElementById("toolTitle").innerText="✨ "+name;
- document.getElementById("reply").innerText=
- name+" चुना गया है। इसका AI कनेक्शन अगले चरण में जोड़ा जाएगा।";
- document.getElementById("question").focus();
+function selectTool(name) {
+  document.getElementById("toolTitle").innerText = "✨ " + name;
+  document.getElementById("reply").innerText =
+    name + " चुना गया है।";
+  document.getElementById("question").focus();
 }
-function sendMessage(){
- let q=document.getElementById("question").value.trim();
- if(!q){alert("पहले अपना सवाल लिखें।");return;}
- document.getElementById("reply").innerText=
- "आपका सवाल दर्ज हो गया है। असली AI जवाब देने के लिए बैकएंड कनेक्शन जोड़ना बाकी है।";
+
+async function sendMessage() {
+  const input = document.getElementById("question");
+  const reply = document.getElementById("reply");
+  const q = input.value.trim();
+
+  if (!q) {
+    alert("पहले अपना सवाल लिखें।");
+    return;
+  }
+
+  reply.innerText = "RK AI जवाब तैयार कर रहा है...";
+
+  try {
+    const response = await fetch("/api/chat", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ message: q })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || "AI से जवाब नहीं मिला।");
+    }
+
+    reply.innerText = data.reply || "कोई जवाब नहीं मिला।";
+
+  } catch (error) {
+    reply.innerText = "समस्या: " + error.message;
+  }
 }
 </script>
 
