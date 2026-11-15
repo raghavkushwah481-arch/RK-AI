@@ -3,241 +3,189 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>R.K AI - Your AI Assistant</title>
+<title>R.K AI</title>
 
 <style>
-* {
-  box-sizing: border-box;
+*{box-sizing:border-box}
+
+body{
+ margin:0;
+ background:#080b14;
+ color:white;
+ font-family:Arial,sans-serif;
 }
 
-body {
-  margin: 0;
-  background: #080b14;
-  color: white;
-  font-family: Arial, sans-serif;
+header{
+ padding:16px;
+ display:flex;
+ align-items:center;
+ gap:12px;
+ border-bottom:1px solid #292b36;
+ background:#0d1120;
 }
 
-header {
-  padding: 18px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  border-bottom: 1px solid #292b36;
-  background: #0d1120;
+.logo{
+ width:45px;
+ height:45px;
+ border:2px solid #d9b45b;
+ border-radius:14px;
+ display:grid;
+ place-items:center;
+ color:#e7c36b;
+ font-size:19px;
+ font-weight:bold;
 }
 
-.logo {
-  width: 45px;
-  height: 45px;
-  border: 2px solid #d9b45b;
-  border-radius: 14px;
-  display: grid;
-  place-items: center;
-  color: #e7c36b;
-  font-size: 19px;
-  font-weight: bold;
+header h2{margin:0;color:#e7c36b}
+header small{color:#aaa}
+
+.container{
+ padding:16px;
+ max-width:750px;
+ margin:auto;
 }
 
-header h2 {
-  margin: 0;
-  color: #e7c36b;
+.hero{
+ padding:22px 15px;
+ text-align:center;
+ border:1px solid #66532e;
+ border-radius:18px;
+ background:linear-gradient(135deg,#171b2a,#10101a);
 }
 
-header small {
-  color: #aaa;
+.hero h1{color:#e7c36b}
+.hero p{color:#bbb;line-height:1.6}
+
+.grid{
+ display:grid;
+ grid-template-columns:repeat(2,1fr);
+ gap:10px;
+ margin-top:20px;
 }
 
-.container {
-  padding: 20px;
-  max-width: 750px;
-  margin: auto;
+.card{
+ background:#131827;
+ border:1px solid #303344;
+ border-radius:14px;
+ padding:15px 8px;
+ text-align:center;
+ cursor:pointer;
 }
 
-.hero {
-  padding: 25px 15px;
-  text-align: center;
-  border: 1px solid #66532e;
-  border-radius: 18px;
-  background: linear-gradient(135deg,#171b2a,#10101a);
+.icon{font-size:25px}
+.card h3{font-size:14px;margin:8px 0 4px}
+.card p{font-size:11px;color:#999;margin:0}
+
+.chat{
+ margin-top:22px;
+ padding:16px;
+ background:#131827;
+ border:1px solid #303344;
+ border-radius:18px;
 }
 
-.hero h1 {
-  color: #e7c36b;
-  font-size: 30px;
+.chat h3{color:#e7c36b}
+
+#messages{
+ display:flex;
+ flex-direction:column;
+ gap:14px;
+ margin:18px 0;
 }
 
-.hero p {
-  color: #bbb;
-  line-height: 1.6;
+.message{
+ padding:15px;
+ border-radius:14px;
+ line-height:1.7;
+ font-size:16px;
+ white-space:pre-wrap;
+ overflow-wrap:anywhere;
 }
 
-.badge {
-  color: #e7c36b;
-  font-size: 12px;
+.user{
+ align-self:flex-end;
+ max-width:90%;
+ background:#d9b45b;
+ color:#111;
+ border-bottom-right-radius:4px;
 }
 
-.grid {
-  display: grid;
-  grid-template-columns: repeat(2,1fr);
-  gap: 12px;
-  margin-top: 22px;
+.bot{
+ align-self:flex-start;
+ max-width:100%;
+ width:100%;
+ background:#202638;
+ border:1px solid #363d52;
+ color:#eee;
+ border-bottom-left-radius:4px;
 }
 
-.card {
-  background: #131827;
-  border: 1px solid #303344;
-  border-radius: 14px;
-  padding: 18px 12px;
-  text-align: center;
-  cursor: pointer;
-  transition: .2s;
+.label{
+ display:block;
+ font-size:12px;
+ font-weight:bold;
+ margin-bottom:8px;
+ opacity:.7;
 }
 
-.card:active {
-  border-color: #e7c36b;
-  transform: scale(.98);
+textarea{
+ width:100%;
+ min-height:58px;
+ max-height:150px;
+ resize:vertical;
+ padding:15px;
+ border-radius:12px;
+ border:1px solid #d9b45b;
+ background:#080b14;
+ color:white;
+ font-size:16px;
+ outline:none;
 }
 
-.icon {
-  font-size: 27px;
+button{
+ background:#d9b45b;
+ color:#111;
+ border:0;
+ border-radius:10px;
+ padding:14px 18px;
+ font-weight:bold;
+ font-size:16px;
+ cursor:pointer;
 }
 
-.card h3 {
-  font-size: 15px;
-  margin: 10px 0 5px;
+#sendBtn{
+ width:100%;
+ margin-top:10px;
 }
 
-.card p {
-  font-size: 12px;
-  color: #999;
-  margin: 0;
+button:disabled{
+ opacity:.6;
+ cursor:not-allowed;
 }
 
-/* CHAT SECTION */
-
-.chat {
-  margin-top: 22px;
-  padding: 18px;
-  background: #131827;
-  border: 1px solid #303344;
-  border-radius: 18px;
+.actions{
+ display:flex;
+ gap:8px;
+ margin-top:10px;
 }
 
-.chat h3 {
-  color: #e7c36b;
-  font-size: 22px;
+.actions button{
+ flex:1;
+ font-size:13px;
+ padding:10px;
 }
 
-.chat-info {
-  color: #aaa;
-  font-size: 13px;
-  line-height: 1.5;
+.secondary{
+ background:#252c3e;
+ color:white;
+ border:1px solid #454b60;
 }
 
-/* MESSAGE AREA */
-
-#chatMessages {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  margin-top: 20px;
-  margin-bottom: 18px;
-}
-
-.message {
-  padding: 13px 15px;
-  border-radius: 14px;
-  max-width: 92%;
-  line-height: 1.6;
-  font-size: 16px;
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
-}
-
-.user-message {
-  align-self: flex-end;
-  background: #d9b45b;
-  color: #111;
-  border-bottom-right-radius: 4px;
-}
-
-.ai-message {
-  align-self: flex-start;
-  background: #202638;
-  color: #eee;
-  border: 1px solid #34394b;
-  border-bottom-left-radius: 4px;
-}
-
-.message-label {
-  font-size: 11px;
-  font-weight: bold;
-  margin-bottom: 5px;
-  opacity: .7;
-}
-
-/* INPUT */
-
-.input-area {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-input {
-  width: 100%;
-  padding: 16px;
-  border-radius: 12px;
-  border: 1px solid #555;
-  background: #080b14;
-  color: white;
-  font-size: 16px;
-  outline: none;
-}
-
-input:focus {
-  border-color: #d9b45b;
-}
-
-button {
-  background: #d9b45b;
-  color: #111;
-  border: 0;
-  border-radius: 10px;
-  padding: 14px 20px;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-button:disabled {
-  opacity: .5;
-  cursor: not-allowed;
-}
-
-#status {
-  color: #aaa;
-  font-size: 12px;
-  margin-top: 10px;
-  min-height: 18px;
-}
-
-footer {
-  text-align: center;
-  color: #777;
-  padding: 25px;
-  font-size: 12px;
-}
-
-@media(max-width:400px) {
-  .container {
-    padding: 14px;
-  }
-
-  .message {
-    max-width: 96%;
-  }
+footer{
+ text-align:center;
+ color:#777;
+ padding:25px;
+ font-size:12px;
 }
 </style>
 </head>
@@ -245,280 +193,255 @@ footer {
 <body>
 
 <header>
-  <div class="logo">RK</div>
-
-  <div>
-    <h2>RK AI</h2>
-    <small>Your AI Assistant</small>
-  </div>
+ <div class="logo">RK</div>
+ <div>
+  <h2>R.K AI</h2>
+  <small>Your AI Assistant</small>
+ </div>
 </header>
 
 <div class="container">
 
-  <!-- HERO -->
+<section class="hero">
+ <div style="color:#e7c36b">WELCOME TO THE FUTURE</div>
+ <h1>R.K AI</h1>
+ <p>आपका अपना स्मार्ट AI सहायक।<br>
+ एक जगह पर AI की कई सुविधाएँ।</p>
+</section>
 
-  <section class="hero">
-    <div class="badge">WELCOME TO THE FUTURE</div>
+<h2 style="color:#e7c36b;margin-top:25px">Explore AI Tools</h2>
 
-    <h1>RK AI</h1>
+<div class="grid">
 
-    <p>
-      एक जगह पर AI की कई सुविधाएँ।<br>
-      आपका स्मार्ट AI असिस्टेंट।
-    </p>
+<div class="card" onclick="selectTool('AI Chat')">
+ <div class="icon">💬</div>
+ <h3>AI Chat</h3><p>AI से बातचीत</p>
+</div>
 
-    <div class="badge">POWERED BY RK AI</div>
-  </section>
+<div class="card" onclick="selectTool('Image Generator')">
+ <div class="icon">🎨</div>
+ <h3>Image Generator</h3><p>AI तस्वीरें</p>
+</div>
 
-  <!-- AI TOOLS -->
+<div class="card" onclick="selectTool('Video Generator')">
+ <div class="icon">🎬</div>
+ <h3>Video Generator</h3><p>AI वीडियो</p>
+</div>
 
-  <h2 style="color:#e7c36b;margin-top:28px">
-    Explore AI Tools
-  </h2>
+<div class="card" onclick="selectTool('Voice Assistant')">
+ <div class="icon">🎙️</div>
+ <h3>Voice Assistant</h3><p>आवाज़ से सहायता</p>
+</div>
 
-  <div class="grid">
+<div class="card" onclick="selectTool('Code Assistant')">
+ <div class="icon">💻</div>
+ <h3>Code Assistant</h3><p>कोडिंग में मदद</p>
+</div>
 
-    <div class="card" onclick="selectTool('AI Chat')">
-      <div class="icon">💬</div>
-      <h3>AI Chat</h3>
-      <p>AI से बातचीत</p>
-    </div>
+<div class="card" onclick="selectTool('App Builder')">
+ <div class="icon">📱</div>
+ <h3>App Builder</h3><p>ऐप बनाना</p>
+</div>
 
-    <div class="card" onclick="selectTool('Image Generator')">
-      <div class="icon">🎨</div>
-      <h3>Image Generator</h3>
-      <p>AI तस्वीरें</p>
-    </div>
+<div class="card" onclick="selectTool('Website Builder')">
+ <div class="icon">🌐</div>
+ <h3>Website Builder</h3><p>वेबसाइट बनाना</p>
+</div>
 
-    <div class="card" onclick="selectTool('Video Generator')">
-      <div class="icon">🎬</div>
-      <h3>Video Generator</h3>
-      <p>AI वीडियो</p>
-    </div>
-
-    <div class="card" onclick="selectTool('Voice Assistant')">
-      <div class="icon">🎙️</div>
-      <h3>Voice Assistant</h3>
-      <p>आवाज़ से सहायता</p>
-    </div>
-
-    <div class="card" onclick="selectTool('Code Assistant')">
-      <div class="icon">💻</div>
-      <h3>Code Assistant</h3>
-      <p>कोडिंग में मदद</p>
-    </div>
-
-    <div class="card" onclick="selectTool('App Builder')">
-      <div class="icon">📱</div>
-      <h3>App Builder</h3>
-      <p>ऐप बनाने में मदद</p>
-    </div>
-
-    <div class="card" onclick="selectTool('Website Builder')">
-      <div class="icon">🌐</div>
-      <h3>Website Builder</h3>
-      <p>वेबसाइट बनाना</p>
-    </div>
-
-    <div class="card" onclick="selectTool('Study Assistant')">
-      <div class="icon">📚</div>
-      <h3>Study Assistant</h3>
-      <p>पढ़ाई में सहायता</p>
-    </div>
-
-  </div>
-
-  <!-- CHAT -->
-
-  <div class="chat">
-
-    <h3 id="toolTitle">✨ RK AI Chat</h3>
-
-    <p class="chat-info">
-      नमस्ते! मैं R.K AI हूँ। अपना सवाल पूछिए।
-    </p>
-
-    <div id="chatMessages">
-
-      <div class="message ai-message">
-        <div class="message-label">R.K AI</div>
-        नमस्ते! 👋 मैं R.K AI हूँ। आज मैं आपकी क्या मदद कर सकता हूँ?
-      </div>
-
-    </div>
-
-    <div class="input-area">
-
-      <input
-        id="question"
-        type="text"
-        placeholder="यहाँ अपना सवाल लिखें..."
-        autocomplete="off"
-      >
-
-      <button id="sendButton" onclick="sendMessage()">
-        Send Message
-      </button>
-
-    </div>
-
-    <div id="status"></div>
-
-  </div>
+<div class="card" onclick="selectTool('Study Assistant')">
+ <div class="icon">📚</div>
+ <h3>Study Assistant</h3><p>पढ़ाई में सहायता</p>
+</div>
 
 </div>
 
+<div class="chat">
+
+<h3 id="toolTitle">💬 R.K AI Chat</h3>
+
+<div id="messages"></div>
+
+<textarea id="question"
+placeholder="यहाँ अपना सवाल लिखें..."></textarea>
+
+<button id="sendBtn" onclick="sendMessage()">
+ Send Message
+</button>
+
+<div class="actions">
+ <button class="secondary" onclick="newChat()">नई चैट</button>
+ <button class="secondary" onclick="clearHistory()">चैट मिटाएँ</button>
+</div>
+
+</div>
+</div>
+
 <footer>
-  RK AI © 2026 | Built with ambition
+ R.K AI © 2026 | Built with ambition
 </footer>
 
 <script>
 
-function selectTool(name) {
+const STORAGE_KEY = "rk_ai_chat_history_v2";
 
-  document.getElementById("toolTitle").innerText =
-    "✨ " + name;
+let history = [];
 
-  document.getElementById("question").focus();
-
-  document.querySelector(".chat").scrollIntoView({
-    behavior: "smooth"
-  });
-
+try {
+ history = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+ if (!Array.isArray(history)) history = [];
+} catch {
+ history = [];
 }
 
-function addMessage(text, type) {
+const messages = document.getElementById("messages");
+const input = document.getElementById("question");
+const sendBtn = document.getElementById("sendBtn");
 
-  const messages = document.getElementById("chatMessages");
-
-  const bubble = document.createElement("div");
-
-  bubble.className = "message " + type;
-
-  const label = document.createElement("div");
-
-  label.className = "message-label";
-
-  label.textContent =
-    type === "user-message" ? "आप" : "R.K AI";
-
-  const content = document.createElement("div");
-
-  content.textContent = text;
-
-  bubble.appendChild(label);
-  bubble.appendChild(content);
-
-  messages.appendChild(bubble);
-
-  bubble.scrollIntoView({
-    behavior: "smooth",
-    block: "end"
-  });
-
-  return content;
-
-}
-
-async function sendMessage() {
-
-  const input = document.getElementById("question");
-
-  const button = document.getElementById("sendButton");
-
-  const status = document.getElementById("status");
-
-  const q = input.value.trim();
-
-  if (!q || button.disabled) {
-    return;
-  }
-
-  // USER MESSAGE
-
-  addMessage(q, "user-message");
-
-  // INPUT CLEAR
-
-  input.value = "";
-
-  // LOADING MESSAGE
-
-  const loading = addMessage(
-    "जवाब तैयार हो रहा है...",
-    "ai-message"
+function saveHistory(){
+ try {
+  localStorage.setItem(
+   STORAGE_KEY,
+   JSON.stringify(history.slice(-30))
   );
+ } catch(error) {
+  console.log("History could not be saved");
+ }
+}
 
-  button.disabled = true;
+function addMessage(role, text){
+ const box = document.createElement("div");
+ box.className = "message " + (role === "user" ? "user" : "bot");
 
-  button.textContent = "Please wait...";
+ const label = document.createElement("span");
+ label.className = "label";
+ label.textContent = role === "user" ? "आप" : "R.K AI";
 
-  status.textContent = "R.K AI सोच रहा है...";
+ const content = document.createElement("div");
+ content.textContent = text;
 
-  try {
+ box.appendChild(label);
+ box.appendChild(content);
+ messages.appendChild(box);
 
-    const response = await fetch("/api/chat", {
+ box.scrollIntoView({behavior:"smooth",block:"end"});
 
-      method: "POST",
+ return content;
+}
 
-      headers: {
-        "Content-Type": "application/json"
-      },
+function renderHistory(){
+ messages.innerHTML = "";
 
-      body: JSON.stringify({
-        message: q
-      })
+ if(history.length === 0){
+  addMessage(
+   "model",
+   "नमस्ते! मैं R.K AI हूँ। बताइए, आज मैं आपकी क्या मदद कर सकता हूँ?"
+  );
+  return;
+ }
 
-    });
+ history.forEach(item => {
+  addMessage(item.role, item.text);
+ });
+}
 
-    const data = await response.json();
+function selectTool(name){
+ document.getElementById("toolTitle").innerText = "✨ " + name;
+ input.focus();
+}
 
-    if (!response.ok) {
+async function sendMessage(){
 
-      throw new Error(
-        data.error || "AI से जवाब नहीं मिला।"
-      );
+ const q = input.value.trim();
 
-    }
+ if(!q) return;
 
-    loading.textContent =
-      data.reply || "कोई जवाब नहीं मिला।";
+ if(sendBtn.disabled) return;
 
-    status.textContent = "";
+ history.push({role:"user",text:q});
+ saveHistory();
 
-  } catch (error) {
+ addMessage("user",q);
 
-    loading.textContent =
-      "माफ कीजिए, समस्या आ गई: " + error.message;
+ input.value = "";
+ sendBtn.disabled = true;
+ sendBtn.innerText = "जवाब तैयार हो रहा है...";
 
-    status.textContent = "कृपया दोबारा कोशिश करें।";
+ const loading = addMessage("model","R.K AI सोच रहा है...");
 
-  } finally {
+ try {
 
-    button.disabled = false;
+  const response = await fetch("/api/chat",{
+   method:"POST",
+   headers:{
+    "Content-Type":"application/json"
+   },
+   body:JSON.stringify({
+    message:q,
+    history:history.slice(-16)
+   })
+  });
 
-    button.textContent = "Send Message";
+  const data = await response.json();
 
-    input.focus();
-
+  if(!response.ok){
+   throw new Error(data.error || "AI से जवाब नहीं मिला।");
   }
+
+  if(!data.reply){
+   throw new Error("खाली जवाब मिला।");
+  }
+
+  loading.textContent = data.reply;
+
+  history.push({
+   role:"model",
+   text:data.reply
+  });
+
+  history = history.slice(-30);
+  saveHistory();
+
+ } catch(error) {
+
+  loading.textContent = "समस्या: " + error.message;
+
+  // असफल संदेश इतिहास में रहने दें,
+  // ताकि अगली बार संदर्भ उपलब्ध रहे।
+
+ } finally {
+
+  sendBtn.disabled = false;
+  sendBtn.innerText = "Send Message";
+  input.focus();
+
+ }
 
 }
 
-// ENTER KEY SUPPORT
+function newChat(){
+ if(!confirm("क्या आप नई बातचीत शुरू करना चाहते हैं?")) return;
 
-document.getElementById("question")
-.addEventListener("keydown", function(event) {
+ history = [];
+ saveHistory();
+ renderHistory();
+}
 
-  if (event.key === "Enter") {
+function clearHistory(){
+ if(!confirm("क्या आप पूरी चैट हिस्ट्री मिटाना चाहते हैं?")) return;
 
-    event.preventDefault();
+ history = [];
+ saveHistory();
+ renderHistory();
+}
 
-    sendMessage();
-
-  }
-
+input.addEventListener("keydown",function(event){
+ if(event.key === "Enter" && !event.shiftKey){
+  event.preventDefault();
+  sendMessage();
+ }
 });
+
+renderHistory();
 
 </script>
 
