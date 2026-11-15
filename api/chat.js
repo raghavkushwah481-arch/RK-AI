@@ -1,47 +1,53 @@
 export default async function handler(req, res) {
   if (req.method !== "POST") {
-    return res.status(405).json({
-      error: "Method not allowed"
-    });
+    return res.status(405).json({ error: "Method not allowed" });
   }
 
   const controller = new AbortController();
-
-  const timeout = setTimeout(() => {
-    controller.abort();
-  }, 18000);
+  const timeout = setTimeout(() => controller.abort(), 20000);
 
   try {
     const { message } = req.body || {};
 
     if (!message || typeof message !== "string") {
-      return res.status(400).json({
-        error: "Message is required"
-      });
+      return res.status(400).json({ error: "अपना सवाल लिखें।" });
     }
 
     const apiKey = process.env.GEMINI_API_KEY;
 
     if (!apiKey) {
       return res.status(500).json({
-        error: "GEMINI_API_KEY is missing"
+        error: "GEMINI_API_KEY नहीं मिली।"
       });
     }
 
-    const text = message.trim();
+    const prompt = `
+तुम R.K AI हो, एक समझदार, मित्रवत और उपयोगी AI असिस्टेंट।
 
-    const isShort = text.length < 100;
+भाषा के नियम:
+1. उपयोगकर्ता हिंदी में बात करे तो हमेशा हिंदी में जवाब दो।
+2. उपयोगकर्ता Roman Hindi में लिखे तो आसान Roman Hindi में जवाब दो।
+3. उपयोगकर्ता अंग्रेज़ी में लिखे तो अंग्रेज़ी में जवाब दो।
+4. बिना माँगे भाषा मत बदलना।
+5. जवाब स्वाभाविक बातचीत जैसे होने चाहिए।
 
-    const model = isShort
-      ? "gemini-3.5-flash-lite"
-      : "gemini-3.8-flash";
+जवाब के नियम:
+1. सवाल को ध्यान से समझो और पूरा जवाब दो।
+2. गाना माँगे तो पूरा गाना लिखो, सिर्फ दो लाइन नहीं।
+3. कहानी माँगे तो पूरी कहानी लिखो।
+4. कोड माँगे तो पूरा और उपयोगी कोड दो।
+5. छोटे सवालों का जवाब छोटा और सीधा दो।
+6. बड़े सवालों का जवाब विस्तार से, साफ-सुथरे ढंग से दो।
+7. अधूरा जवाब देकर बीच में मत रुको।
+8. उपयोगकर्ता से दोस्त की तरह बात करो।
+9. अपना नाम R.K AI बताओ, Gemini नहीं।
 
-    const instructions = isShort
-      ? "You are R.K AI. Give a short, direct answer in the user's language."
-      : "You are R.K AI, an intelligent assistant. Explain clearly in the user's language with useful details.";
+उपयोगकर्ता का सवाल:
+${message}
+`;
 
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`,
+      "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent",
       {
         method: "POST",
         signal: controller.signal,
@@ -50,14 +56,14 @@ export default async function handler(req, res) {
           "x-goog-api-key": apiKey
         },
         body: JSON.stringify({
-          systemInstruction: {
-            parts: [{ text: instructions }]
-          },
-          contents: [{
-            parts: [{ text }]
-          }],
+          contents: [
+            {
+              parts: [{ text: prompt }]
+            }
+          ],
           generationConfig: {
-            maxOutputTokens: isShort ? 128 : 1024
+            maxOutputTokens: 4096,
+            temperature: 0.7
           }
         })
       }
@@ -67,25 +73,28 @@ export default async function handler(req, res) {
 
     if (!response.ok) {
       return res.status(response.status).json({
-        error: data.error?.message || "AI service error"
+        error: data.error?.message || "AI से जवाब नहीं मिला।"
       });
     }
 
     const reply = data.candidates?.[0]?.content?.parts
       ?.map(part => part.text || "")
-      .join("") || "कोई जवाब नहीं मिला।";
+      .join("")
+      .trim();
 
-    return res.status(200).json({ reply });
+    return res.status(200).json({
+      reply: reply || "माफ़ कीजिए, इस बार जवाब नहीं मिल पाया।"
+    });
 
   } catch (error) {
     if (error.name === "AbortError") {
       return res.status(504).json({
-        error: "AI को जवाब देने में अधिक समय लग रहा है। दोबारा कोशिश करें।"
+        error: "जवाब आने में 20 सेकंड से ज्यादा लग गए। दोबारा कोशिश करें।"
       });
     }
 
     return res.status(500).json({
-      error: "Server error"
+      error: "सर्वर में समस्या हुई। कृपया दोबारा कोशिश करें।"
     });
 
   } finally {
