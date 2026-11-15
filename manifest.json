@@ -1,0 +1,13 @@
+{
+  "background_color": "#111827",
+  "dir": "ltr",
+  "display": "standalone",
+  "name": "R.K AI",
+  "orientation": "any",
+  "scope": "/",
+  "short_name": "RKAI",
+  "start_url": "/",
+  "theme_color": "#ddb65a",
+  "id": "rk-ai",
+  "description": "R.K AI is your smart AI assistant for chat, creativity, learning and building apps."
+}
