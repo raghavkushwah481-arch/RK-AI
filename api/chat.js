@@ -1,5 +1,4 @@
 export default async function handler(req, res) {
-  // केवल POST request स्वीकार करें
   if (req.method !== "POST") {
     return res.status(405).json({
       error: "Method not allowed"
@@ -15,25 +14,30 @@ export default async function handler(req, res) {
       });
     }
 
-    const apiKey = process.env.OPENAI_API_KEY;
+    const apiKey = process.env.GEMINI_API_KEY;
 
     if (!apiKey) {
       return res.status(500).json({
-        error: "OPENAI_API_KEY is not configured"
+        error: "GEMINI_API_KEY is missing"
       });
     }
 
     const response = await fetch(
-      "https://api.openai.com/v1/responses",
+      "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent",
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${apiKey}`
+          "x-goog-api-key": apiKey
         },
         body: JSON.stringify({
-          model: "gpt-4.1-mini",
-          input: message
+          contents: [
+            {
+              parts: [
+                { text: message }
+              ]
+            }
+          ]
         })
       }
     );
@@ -41,26 +45,19 @@ export default async function handler(req, res) {
     const data = await response.json();
 
     if (!response.ok) {
-      console.error("OpenAI API Error:", data);
-
       return res.status(response.status).json({
-        error: data.error?.message || "AI request failed"
+        error: data.error?.message || "Gemini API failed"
       });
     }
 
-    const answer =
-      data.output_text ||
-      data.output
-        ?.flatMap(item => item.content || [])
-        .find(item => item.type === "output_text")?.text;
+    const reply =
+      data.candidates?.[0]?.content?.parts
+        ?.map(part => part.text || "")
+        .join("") || "कोई जवाब नहीं मिला।";
 
-    return res.status(200).json({
-      reply: answer || "कोई जवाब नहीं मिला।"
-    });
+    return res.status(200).json({ reply });
 
   } catch (error) {
-    console.error(error);
-
     return res.status(500).json({
       error: "Server error"
     });
