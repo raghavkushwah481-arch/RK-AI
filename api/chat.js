@@ -6,9 +6,10 @@ export default async function handler(req, res) {
   }
 
   const controller = new AbortController();
+
   const timeout = setTimeout(() => {
     controller.abort();
-  }, 20000);
+  }, 18000);
 
   try {
     const { message } = req.body || {};
@@ -27,15 +28,20 @@ export default async function handler(req, res) {
       });
     }
 
-    // छोटे सवालों के लिए छोटे जवाब
-    const isShort = message.trim().length < 100;
+    const text = message.trim();
+
+    const isShort = text.length < 100;
+
+    const model = isShort
+      ? "gemini-3.5-flash-lite"
+      : "gemini-3.8-flash";
 
     const instructions = isShort
-      ? "You are R.K AI. Give short, direct and fast answers. Reply in the user's language. Avoid unnecessary details."
-      : "You are R.K AI, a helpful intelligent assistant. Reply in the user's language. Explain clearly with useful details. Keep answers organized.";
+      ? "You are R.K AI. Give a short, direct answer in the user's language."
+      : "You are R.K AI, an intelligent assistant. Explain clearly in the user's language with useful details.";
 
     const response = await fetch(
-      "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent",
+      `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`,
       {
         method: "POST",
         signal: controller.signal,
@@ -47,13 +53,11 @@ export default async function handler(req, res) {
           systemInstruction: {
             parts: [{ text: instructions }]
           },
-          contents: [
-            {
-              parts: [{ text: message }]
-            }
-          ],
+          contents: [{
+            parts: [{ text }]
+          }],
           generationConfig: {
-            maxOutputTokens: isShort ? 256 : 2048
+            maxOutputTokens: isShort ? 128 : 1024
           }
         })
       }
@@ -63,21 +67,20 @@ export default async function handler(req, res) {
 
     if (!response.ok) {
       return res.status(response.status).json({
-        error: data.error?.message || "Gemini API failed"
+        error: data.error?.message || "AI service error"
       });
     }
 
-    const reply =
-      data.candidates?.[0]?.content?.parts
-        ?.map(part => part.text || "")
-        .join("") || "कोई जवाब नहीं मिला।";
+    const reply = data.candidates?.[0]?.content?.parts
+      ?.map(part => part.text || "")
+      .join("") || "कोई जवाब नहीं मिला।";
 
     return res.status(200).json({ reply });
 
   } catch (error) {
     if (error.name === "AbortError") {
       return res.status(504).json({
-        error: "जवाब आने में 20 सेकंड से ज्यादा लग रहे हैं। कृपया दोबारा कोशिश करें।"
+        error: "AI को जवाब देने में अधिक समय लग रहा है। दोबारा कोशिश करें।"
       });
     }
 
